@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>موقع التحفيز والعدادات</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background: linear-gradient(135deg, #020024, #090979, #00d4ff);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
+      color: #fff;
+      text-align: center;
+    }
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    h1 {
+      font-size: 28px;
+      margin: 20px 0;
+      text-shadow: 0 0 10px #fff, 0 0 20px #0ff;
+    }
+    .section {
+      margin: 20px auto;
+      padding: 15px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.5);
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 20px #0ff;
+    }
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+    .box {
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 15px;
+      min-width: 70px;
+    }
+    .num {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff0;
+    }
+    .label {
+      font-size: 14px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #0ff;
+      color: #000;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌟 موقع التحفيز والعدادات 🌟</h1>
+
+  <!-- 💰 الحصالة -->
+  <div class="section">
+    <h2>💰 حصالة الإدخار</h2>
+    <p id="savings">0 / 15000 دج</p>
+    <button onclick="addSaving()">➕ أضف مبلغ</button>
+  </div>
+
+  <!-- 🎵 أغنية -->
+  <div class="section">
+    <h2>🎵 أغنية تحفيزية</h2>
+    <audio controls autoplay loop>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <!-- ⏳ العدادات -->
+  <div class="section">
+    <h2>⏳ كم باقي على رمضان</h2>
+    <div id="ramadan" class="countdown"></div>
+  </div>
+
+  <div class="section">
+    <h2>🎉 كم باقي على عيد الفطر</h2>
+    <div id="eidFitr" class="countdown"></div>
+  </div>
+
+  <div class="section">
+    <h2>🕋 كم باقي على عيد الأضحى</h2>
+    <div id="eidAdha" class="countdown"></div>
+  </div>
+
+  <script>
+    // 💰 الحصالة
+    let savings = 0;
+    function addSaving() {
+      let amount = prompt("أدخل المبلغ:");
+      if (!amount) return;
+      let num = parseInt(amount);
+      if (!isNaN(num)) {
+        savings += num;
+        if (savings > 15000) savings = 15000;
+        document.getElementById("savings").innerText = savings + " / 15000 دج";
+      }
+    }
+
+    // ⏳ العدادات
+    function renderCountdown(targetDate, elementId) {
+      function update() {
+        const now = new Date();
+        const diff = targetDate - now;
+        const el = document.getElementById(elementId);
+        if (diff <= 0) {
+          el.innerHTML = "<h3>🎉 حان الموعد!</h3>";
+          return;
+        }
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+        el.innerHTML = `
+          <div class="box"><div class="num">${d}</div><div class="label">أيام</div></div>
+          <div class="box"><div class="num">${h}</div><div class="label">ساعات</div></div>
+          <div class="box"><div class="num">${m}</div><div class="label">دقائق</div></div>
+          <div class="box"><div class="num">${s}</div><div class="label">ثواني</div></div>
+        `;
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
+    // 🕌 تواريخ تقريبية (عدّلها حسب السنة)
+    const ramadan = new Date("2026-02-18T00:00:00");
+    const eidFitr = new Date("2026-03-20T00:00:00");
+    const eidAdha = new Date("2026-06-27T00:00:00");
+
+    renderCountdown(ramadan, "ramadan");
+    renderCountdown(eidFitr, "eidFitr");
+    renderCountdown(eidAdha, "eidAdha");
+  </script>
+</body>
+</html>
